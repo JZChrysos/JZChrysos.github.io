@@ -3,7 +3,7 @@ var stage = new createjs.Stage("TileSpace");
 var WIDTH = stage.canvas.width;
 var HEIGHT = stage.canvas.height;
 var TILESIZE = 50;
-var TILEBUFFER = 1;
+var TILEBUFFER = 0;
 var NUM_COLS = Math.floor(WIDTH / (TILESIZE + TILEBUFFER));
 var NUM_ROWS = Math.floor(HEIGHT / (TILESIZE + TILEBUFFER));
 
@@ -22,10 +22,10 @@ const WANG_TILE_SET = [ // (N,W,S,E)
 ];
 
 const COLOR_DICT = {
-	0:"#ff0000",
-	1:"#00ff00",
-	2:"#0000ff",
-	3:"#ffff00",
+	0:"#FB8B24",
+	1:"#D90368",
+	2:"#2382C1",
+	3:"#04A777",
 };
 
 let selectedTile = null;
@@ -83,7 +83,7 @@ class Tile extends createjs.Shape {
 			this.graphics = tilegraphics;
 		};
 		if (this.selected === true){
-			this.graphics.beginStroke("black").moveTo(0,0).lineTo(TILESIZE,0).lineTo(TILESIZE,TILESIZE).lineTo(0,TILESIZE).lineTo(0,0);
+			this.graphics.beginStroke("black").moveTo(1,1).lineTo(TILESIZE-1,1).lineTo(TILESIZE-1,TILESIZE-1).lineTo(1,TILESIZE-1).lineTo(1,1);
 		};
 		stage.update();
 	}
@@ -99,6 +99,38 @@ for (var i = 0; i < NUM_COLS; i++){
 		stage.addChild(newtile);
 		stage.update();
 	}
+}
+
+function validtile(i,j,id){
+	if (j > 0){
+		if (tiles[i][j-1].tileid !== 'blank'){
+			if (WANG_TILE_SET[tiles[i][j-1].tileid][2] !== WANG_TILE_SET[id][0]){
+				return false;
+			}
+		} 
+	}
+	if (i > 0){
+		if (tiles[i-1][j].tileid !== 'blank'){
+			if (WANG_TILE_SET[tiles[i-1][j].tileid][3] !== WANG_TILE_SET[id][1]){
+				return false;
+			}
+		} 
+	}
+	if (j < NUM_ROWS){
+		if (tiles[i][j+1].tileid !== 'blank'){
+			if (WANG_TILE_SET[tiles[i][j+1].tileid][0] !== WANG_TILE_SET[id][2]){
+				return false;
+			}
+		} 
+	}
+	if (i < NUM_COLS){
+		if (tiles[i+1][j].tileid !== 'blank'){
+			if (WANG_TILE_SET[tiles[i+1][j].tileid][1] !== WANG_TILE_SET[id][3]){
+				return false;
+			}
+		} 
+	}
+	return true;
 }
 
 stage.addEventListener("click", function(){
@@ -158,7 +190,14 @@ window.addEventListener("keydown", function(event){
 	// LETTERS
 	const letterdict = {'a': 0, 'b': 1, 'c': 2, 'd':3, 'e':4, 'f':5, 'g':6, 'h':7, 'i':8, 'j':9, 'k':10};
 	if (Object.keys(letterdict).includes(event.key)){
-		selectedTile.tileid = letterdict[event.key];
+		if (validtile(selectedTile.i,selectedTile.j,letterdict[event.key])){
+			selectedTile.tileid = letterdict[event.key];
+			selectedTile.updategraphics();
+		}
+	}
+
+	if (event.key === ' '){
+		selectedTile.tileid = 'blank';
 		selectedTile.updategraphics();
 	}
 });
