@@ -2,10 +2,22 @@ var stage = new createjs.Stage("TileSpace");
 
 var WIDTH = stage.canvas.width;
 var HEIGHT = stage.canvas.height;
-var TILESIZE = 50;
+
+// resize canvas
+var NEW_WIDTH = 600;
+var NEW_HEIGHT = 600;
+var scale = NEW_WIDTH / WIDTH;
+stage.canvas.width = NEW_WIDTH;
+stage.canvas.height = NEW_HEIGHT;
+stage.scaleX = stage.scaleY = scale;
+stage.update();
+
+// set params
+var NUM_COLS = 6 // Math.floor(WIDTH / (TILESIZE + TILEBUFFER));
+var NUM_ROWS = 6 // Math.floor(HEIGHT / (TILESIZE + TILEBUFFER));
+// var TILESIZE = 50;
+var TILESIZE = Math.floor(WIDTH / NUM_COLS);
 var TILEBUFFER = 0;
-var NUM_COLS = Math.floor(WIDTH / (TILESIZE + TILEBUFFER));
-var NUM_ROWS = Math.floor(HEIGHT / (TILESIZE + TILEBUFFER));
 
 const WANG_TILE_SET = [ // (N,W,S,E)
 	[1,3,1,1],
@@ -83,7 +95,9 @@ class Tile extends createjs.Shape {
 			this.graphics = tilegraphics;
 		};
 		if (this.selected === true){
-			this.graphics.beginStroke("black").moveTo(1,1).lineTo(TILESIZE-1,1).lineTo(TILESIZE-1,TILESIZE-1).lineTo(1,TILESIZE-1).lineTo(1,1);
+			this.graphics.setStrokeStyle(0.5).beginStroke("black").drawRect(0.25,0.25,TILESIZE-0.5,TILESIZE-0.5);
+			// stage.addChild(this); // to bring to front
+			// moveTo(0,0).lineTo(TILESIZE,0).lineTo(TILESIZE,TILESIZE).lineTo(0,TILESIZE).lineTo(0,0);
 		};
 		stage.update();
 	}
@@ -116,14 +130,14 @@ function validtile(i,j,id){
 			}
 		} 
 	}
-	if (j < NUM_ROWS){
+	if (j < NUM_ROWS - 1){
 		if (tiles[i][j+1].tileid !== 'blank'){
 			if (WANG_TILE_SET[tiles[i][j+1].tileid][0] !== WANG_TILE_SET[id][2]){
 				return false;
 			}
 		} 
 	}
-	if (i < NUM_COLS){
+	if (i < NUM_COLS - 1){
 		if (tiles[i+1][j].tileid !== 'blank'){
 			if (WANG_TILE_SET[tiles[i+1][j].tileid][1] !== WANG_TILE_SET[id][3]){
 				return false;
@@ -201,3 +215,76 @@ window.addEventListener("keydown", function(event){
 		selectedTile.updategraphics();
 	}
 });
+
+
+// LOWER PANEL
+
+var panel = new createjs.Stage("TileGuide");
+
+var WIDTH2 = panel.canvas.width;
+var HEIGHT2 = panel.canvas.height;
+
+// resize canvas
+var k = 1.5;
+var NEW_WIDTH2 = 600*k;
+var NEW_HEIGHT2 = 400*k;
+var scale2 = NEW_WIDTH2 / WIDTH2;
+panel.canvas.width = NEW_WIDTH2;
+panel.canvas.height = NEW_HEIGHT2;
+panel.scaleX = panel.scaleY = scale2*0.35;
+panel.update();
+
+var TILESIZE2 = (panel.canvas.width / 11)*0.3/k - 6;
+
+class Tile2 extends createjs.Shape {
+	constructor(x, y, tileid) {
+		super();
+		this.x = x;
+		this.y = y;
+		this.tileid = tileid;
+		// this.on("click", function(){
+			
+		// });
+
+		var tile = WANG_TILE_SET[this.tileid];
+		var tilecolors = []; 
+		for (j = 0; j < 4; j++){
+			tilecolors[j] = COLOR_DICT[tile[j]];
+		}
+		var tilegraphics = new createjs.Graphics();
+		tilegraphics.beginFill(tilecolors[0]).moveTo(TILESIZE2/2,TILESIZE2/2).lineTo(0,0).lineTo(TILESIZE2,0).closePath(); // N
+		tilegraphics.beginFill(tilecolors[1]).moveTo(TILESIZE2/2,TILESIZE2/2).lineTo(0,0).lineTo(0,TILESIZE2).closePath(); // W
+		tilegraphics.beginFill(tilecolors[2]).moveTo(TILESIZE2/2,TILESIZE2/2).lineTo(TILESIZE2,TILESIZE2).lineTo(0,TILESIZE2).closePath(); // S
+		tilegraphics.beginFill(tilecolors[3]).moveTo(TILESIZE2/2,TILESIZE2/2).lineTo(TILESIZE2,TILESIZE2).lineTo(TILESIZE2,0).closePath().endFill(); // E
+		this.graphics = tilegraphics;
+
+		// LABEL
+		const letterdictreversed = {0: 'a', 1: 'b', 2: 'c', 3: 'd', 4:'e', 5:'f', 6:'g', 7:'h', 8:'i', 9:'j', 10:'k'};
+
+		var text = new createjs.Text(letterdictreversed[tileid],"8px Arial", "#000000");
+		text.x = this.x + TILESIZE2/2;
+		text.y = this.y + 12;
+		text.textAlign = "center";
+		panel.addChild(text);
+
+		panel.update();
+	}
+}
+
+const tiles2 = new Array();
+
+// const panelcoords = [[0,0],[20,0],[40,0]];
+
+for (var i = 0; i < WANG_TILE_SET.length; i++){
+	// var x = panelcoords[i][0];
+	// var y = panelcoords[i][1];
+	var x = i*15 + 5;
+	var y = 0;
+	var newtile = new Tile2(x,y,i);
+	// console.log("tile 2: " + x + " " + y + " " + i);
+	tiles2[i] = newtile;
+	panel.addChild(newtile);
+	panel.update();
+}
+
+
