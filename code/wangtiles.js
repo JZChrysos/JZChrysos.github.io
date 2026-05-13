@@ -15,8 +15,6 @@ stage.update();
 // set params
 // initialize score, size
 
-localStorage.clear();
-
 if (localStorage.getItem('score') === null){
 	localStorage.setItem('score',0);
 	localStorage.setItem('SIZE',4);
@@ -433,6 +431,10 @@ function updatescore() {
 	var score = localStorage.getItem('score');
 	scoretext.text = "your best: " + score + "x" + score;
 	panel.update();
+}
+
+if (localStorage.getItem('score') != null){
+	updatescore();
 }
 
 const tiles2 = new Array();
