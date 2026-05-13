@@ -21,15 +21,19 @@ body {
 }
 div {
     display: flex;
-    justify-content: center; /* Horizontal centering */
-    align-items: center;     /* Vertical centering */
+    justify-content: center; 
+    align-items: center;     
 }
 h1 {
     text-align: center;
+    padding-top: 0;
+    padding-bottom: 0;
 }
 #TileSpace {
     padding-left: 0;
     padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
     margin-left: auto;
     margin-right: auto;
     display: block;
@@ -39,6 +43,8 @@ h1 {
 #TileGuide {
     padding-left: 0;
     padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
     margin-left: auto;
     margin-right: auto;
     display: block;
@@ -47,11 +53,39 @@ h1 {
 }
 </style>
 
-<script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
-<script async src="./code/wangtiles.js"></script>
 <body>
 
-    <h1> Wang Tile Game </h1>
+    <dialog id="winBox" style="top:200px">
+            <span class="close" style="cursor:pointer">&times;</span>
+            <h2 style="font-style:italic"> Congratulations! </h2>
+            <p id="winMessage"> </p>
+            <div>
+            <div style="gap:30px">
+                <button id="yesButton">Yes!</button>
+                <button id="noButton">No!</button>
+            </div>
+            </div>
+    </dialog>
+
+    <h1> Wang Tile Game </h1> 
+    <div style="gap:400px; padding-bottom:5px">
+        <button id="homeButton">Home</button>
+    <button id="optionsButton">
+        Options
+    </button>
+    </div>
+
+    <dialog id="optionsBox" style="top:200px">
+            <span class="close" style="cursor:pointer">&times;</span>
+            <h3> Options: </h3>
+            <div>
+            <div style="gap:30px">
+            <p> Try a different grid size: </p>
+            <input type="text" id="sizeInput" maxlength="2" size="2">
+            <button id="submitButton">Submit</button>
+            </div>
+            </div>
+    </dialog>
 
 
     <canvas id="TileSpace" width="60%" height="60%"></canvas>
@@ -60,6 +94,16 @@ h1 {
 
     <canvas id="TileGuide" width="60%" height="40%"></canvas>
 
-</body>
 
+<script src="https://code.createjs.com/1.0.0/createjs.min.js"></script>
+<script async src="./code/wangtiles.js"></script>
+
+<!-- to do:
+ 1. make bottom tiles highlight or fade depending on whether they can be placed or not
+ 2. make tiles dance (like solitaire) to celebrate player victory
+ 3. add ability to adjust the colors
+ 4. leaderboard?
+ 5. ability to export the image -->
+
+</body>
 </html>

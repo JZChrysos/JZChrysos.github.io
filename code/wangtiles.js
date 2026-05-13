@@ -13,10 +13,133 @@ stage.scaleX = stage.scaleY = scale;
 stage.update();
 
 // set params
-var NUM_COLS = 6 // Math.floor(WIDTH / (TILESIZE + TILEBUFFER));
-var NUM_ROWS = 6 // Math.floor(HEIGHT / (TILESIZE + TILEBUFFER));
+// initialize score, size
+
+if (localStorage.getItem('score') === undefined){
+	localStorage.setItem('score',0);
+	localStorage.setItem('SIZE',4);
+} else {
+	var score = localStorage.getItem('score');
+	if (localStorage.getItem("SIZE") === undefined){
+		localStorage.setItem('SIZE',Math.max(parseInt(score)+1,4));
+	}
+}
+
+var SIZE = localStorage.getItem("SIZE");
+
+//DIALOG BOX + BUTTONS
+
+let winBox = document.getElementById("winBox");
+let winMessage = document.getElementById("winMessage");
+let yesButton = document.getElementById("yesButton");
+let noButton = document.getElementById("noButton");
+let span = document.getElementsByClassName("close")[0];
+let span2 = document.getElementsByClassName("close")[1];
+let submitButton = document.getElementById("submitButton");
+let optionsButton = document.getElementById("optionsButton");
+let homeButton = document.getElementById("homeButton");
+
+span.onclick = function() {
+  winBox.open = false;
+}
+window.onclick = function(event) {
+  winBox.open = false;
+}
+yesButton.onclick = function() {
+	var score = localStorage.getItem('score');
+	localStorage.setItem("SIZE", parseInt(score) + 1);
+	window.location.reload();
+}
+noButton.onclick = function() {
+  winBox.open = false;
+}
+
+
+span2.onclick = function() {
+  optionsBox.open = false;
+}
+submitButton.onclick = function() {
+	const sizeInput = document.getElementById("sizeInput").value;
+	if (/^\d+$/.test(sizeInput)){
+		let newsize = parseInt(sizeInput);
+		if (newsize >= 1 && newsize <= 24){
+			localStorage.setItem("SIZE",newsize);
+			window.location.reload();
+		} else {
+			alert("Size must be an integer in [1,24]");
+		}
+	} else {
+		alert("Size must be an integer in [1,24]");
+	}
+}
+
+optionsButton.onclick = function() {
+	optionsBox.open = true;
+}
+homeButton.onclick = function() {
+	window.location.href = "./fun.html";
+}
+
+const MYBEST = 6;
+
+function winMessageText(recentscore, prevbestscore){
+	var score = parseInt(localStorage.getItem('score'));
+	var message = "You've successfully solved the tiling puzzle at size "+ recentscore + "x" + recentscore + ". ";
+	if (recentscore > MYBEST){
+		message += "That's better than my own personal best of " + MYBEST + "x" + MYBEST + ". Nicely done! "
+	}
+	if (recentscore == MYBEST){
+		message += "You've matched my own personal best of " + MYBEST + "x" + MYBEST + ". "
+		if (score > MYBEST){
+			message += "And in the past you did even better! "
+		}
+	}
+	if (recentscore < MYBEST){
+		message += "My personal best is " + MYBEST + "x" + MYBEST ;
+		if (score == MYBEST){
+			message += ", which you've also achieved in the past. "
+		}
+		if (score > MYBEST){
+			message += ", which you've surpassed previously. "
+		}
+		if (score < MYBEST){
+			message += ". "
+		}
+	}
+	// if (recentscore > prevbestscore){
+	// 	message += "That's better than your previous largest solution of " + prevbestscore + "x" + prevbestscore + ". ";
+	// 	// if (recentscore > (prevbestscore + 1)){
+	// 	// 	message += "By a lot! ";
+	// 	// }
+	// }
+	// if (recentscore === prevbestscore){
+	// 	message += "You've tied your previous largest solution of " + prevbestscore + "x" + prevbestscore + ". ";
+	// }
+	// if (recentscore < prevbestscore){
+	// 	message += "It's not as good as your previous best of " + prevbestscore + "x" + prevbestscore + ". "
+	// }
+	// if (score > MYBEST){
+	// 	message += "You've surpassed my best performance of "+MYBEST+". ";
+	// 	if (score > (MYBEST + 1)){
+	// 		message += "By a lot! ";
+	// 	}
+	// 	message += "Nicely done. ";
+	// }
+	// if (score < MYBEST){
+	// 	message += "My own personal best is " + MYBEST + ". ";
+	// }
+	// if (score === MYBEST){
+	// 	message += "You've matched my own personal best of " + MYBEST + ". Well done. If you could beat me, that would be pretty impressive, I think. "
+	// }
+	message += "Would you like to try the next size you haven't beaten yet, " + (score + 1) + "x" + (score + 1) + "? ";
+	return message;
+}
+
+var NUM_COLS = SIZE // Math.floor(WIDTH / (TILESIZE + TILEBUFFER));
+var NUM_ROWS = SIZE // Math.floor(HEIGHT / (TILESIZE + TILEBUFFER));
 // var TILESIZE = 50;
 var TILESIZE = Math.floor(WIDTH / NUM_COLS);
+var correctionfactor = (WIDTH - TILESIZE * NUM_COLS)/2;
 var TILEBUFFER = 0;
 
 const WANG_TILE_SET = [ // (N,W,S,E)
@@ -47,8 +170,8 @@ class Tile extends createjs.Shape {
 		super();
 		this.i = i;
 		this.j = j;
-		this.x = i*(TILESIZE + TILEBUFFER);
-		this.y = j*(TILESIZE + TILEBUFFER);
+		this.x = i*(TILESIZE + TILEBUFFER) + correctionfactor;
+		this.y = j*(TILESIZE + TILEBUFFER) + correctionfactor;
 		this.selected = false;
 		// this.graphics.beginFill("#eeeeee").drawRect(0, 0, TILESIZE, TILESIZE);
 		this.graphics = new createjs.Graphics().beginFill("#eeeeee").drawRect(0,0,TILESIZE,TILESIZE);
@@ -62,17 +185,12 @@ class Tile extends createjs.Shape {
 		});
 	}
 	select() {
-		// this.graphics.beginStroke("black").drawRect(1, 1, TILESIZE-1, TILESIZE-1);
-		console.log('selected tile at ' + this.i + ',' + this.j)
 		this.selected = true;
 		selectedTile = this;
 		this.updategraphics();
 		stage.update();
 	}
 	unselect() {
-		// this.graphics = new createjs.Graphics().beginFill("#eeeeee").drawRect(0, 0, TILESIZE, TILESIZE);
-		// this.graphics = GRAPHIC_DICT['blank'];
-		console.log('unselected tile at ' + this.i + ',' + this.j)
 		this.selected = false;
 		this.updategraphics();
 		stage.update();
@@ -81,7 +199,6 @@ class Tile extends createjs.Shape {
 		if (this.tileid === 'blank'){
 			this.graphics = new createjs.Graphics().beginFill("#eeeeee").drawRect(0,0,TILESIZE,TILESIZE);
 		} else {
-			console.log('tileid: ' + this.tileid);
 			var tile = WANG_TILE_SET[this.tileid];
 			var tilecolors = []; 
 			for (j = 0; j < 4; j++){
@@ -113,6 +230,17 @@ for (var i = 0; i < NUM_COLS; i++){
 		stage.addChild(newtile);
 		stage.update();
 	}
+}
+
+function gridcomplete(){
+	for (var i = 0; i < NUM_COLS; i++){
+		for (var j = 0; j < NUM_ROWS; j++){
+			if (tiles[i][j].tileid === 'blank'){
+				return false;
+			}
+		}
+	}
+	return true;
 }
 
 function validtile(i,j,id){
@@ -158,8 +286,15 @@ stage.addEventListener("click", function(){
 	stage.update();
 }, capture=true);
 
+window.addEventListener("click", function (event){
+	console.log(event.target);
+	if (event.target.id != "TileSpace"){
+		selectedTile.unselect();
+		selectedTile = null;
+	}
+}, capture=true);
+
 window.addEventListener("keydown", function(event){
-	// console.log('key: ' + event.key);
 	// ARROWS
 	if (event.key === "ArrowUp"){
 		if (selectedTile !== null){
@@ -207,6 +342,14 @@ window.addEventListener("keydown", function(event){
 		if (validtile(selectedTile.i,selectedTile.j,letterdict[event.key])){
 			selectedTile.tileid = letterdict[event.key];
 			selectedTile.updategraphics();
+			if (gridcomplete() === true){
+				let prevbestscore = this.localStorage.getItem('score');
+				localStorage.setItem('score',Math.max(prevbestscore, SIZE));
+				updatescore();
+				winMessage.innerHTML = winMessageText(SIZE,prevbestscore);
+				// console.log('win recorded');
+				winBox.open = true; // opens win message
+			}
 		}
 	}
 
@@ -271,20 +414,41 @@ class Tile2 extends createjs.Shape {
 	}
 }
 
-const tiles2 = new Array();
+var spacetext = new createjs.Text("[space] = blank","8px Arial", "#000000");
+spacetext.x = 35;
+spacetext.y = 27;
+spacetext.textAlign = "center";
+panel.addChild(spacetext);
+panel.update();
 
-// const panelcoords = [[0,0],[20,0],[40,0]];
+const scoretext = new createjs.Text(" ","8px Arial", "#000000");
+scoretext.x = 140;
+scoretext.y = 27;
+scoretext.textAlign = "center";
+panel.addChild(scoretext);
+
+function updatescore() {
+	var score = localStorage.getItem('score');
+	scoretext.text = "your best: " + score + "x" + score;
+	panel.update();
+}
+
+// initialize score
+if (localStorage.getItem('score') === undefined){
+	localStorage.setItem('score',0);
+} else { 
+	updatescore(); 
+}
+
+const tiles2 = new Array();
 
 for (var i = 0; i < WANG_TILE_SET.length; i++){
 	// var x = panelcoords[i][0];
 	// var y = panelcoords[i][1];
-	var x = i*15 + 5;
+	var x = i*15 + 6;
 	var y = 0;
 	var newtile = new Tile2(x,y,i);
-	// console.log("tile 2: " + x + " " + y + " " + i);
 	tiles2[i] = newtile;
 	panel.addChild(newtile);
 	panel.update();
 }
-
-
