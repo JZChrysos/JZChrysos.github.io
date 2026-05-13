@@ -433,13 +433,6 @@ function updatescore() {
 	panel.update();
 }
 
-// initialize score
-if (localStorage.getItem('score') === undefined){
-	localStorage.setItem('score',0);
-} else { 
-	updatescore(); 
-}
-
 const tiles2 = new Array();
 
 for (var i = 0; i < WANG_TILE_SET.length; i++){
