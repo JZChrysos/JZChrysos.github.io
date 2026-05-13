@@ -15,12 +15,14 @@ stage.update();
 // set params
 // initialize score, size
 
-if (localStorage.getItem('score') === undefined){
+localStorage.clear();
+
+if (localStorage.getItem('score') === null){
 	localStorage.setItem('score',0);
 	localStorage.setItem('SIZE',4);
 } else {
 	var score = localStorage.getItem('score');
-	if (localStorage.getItem("SIZE") === undefined){
+	if (localStorage.getItem("SIZE") === null){
 		localStorage.setItem('SIZE',Math.max(parseInt(score)+1,4));
 	}
 }
