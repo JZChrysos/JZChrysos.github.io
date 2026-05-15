@@ -203,6 +203,15 @@ class Tile extends createjs.Shape {
 			}
 			// stage.update();
 		});
+		this.on("dblclick", function(){
+			this.selected=true;
+			selectedTile = this;
+			this.tileid ='blank'
+			this.updategraphics();
+			if (localStorage.getItem('highlight') === 'true'){
+				updatehighlight(this.i,this.j);
+			}
+		})
 	}
 	select() {
 		this.selected = true;
