@@ -1,5 +1,8 @@
 var stage = new createjs.Stage("TileSpace");
 
+createjs.Ticker.setFPS(60);
+createjs.Ticker.addEventListener("tick", stage);
+
 var WIDTH = stage.canvas.width;
 var HEIGHT = stage.canvas.height;
 
@@ -13,7 +16,7 @@ stage.scaleX = stage.scaleY = scale;
 stage.update();
 
 // set params
-// initialize score, size
+// initialize score, size, highlight
 
 if (localStorage.getItem('score') === null){
 	localStorage.setItem('score',0);
@@ -23,6 +26,10 @@ if (localStorage.getItem('score') === null){
 	if (localStorage.getItem("SIZE") === null){
 		localStorage.setItem('SIZE',Math.max(parseInt(score)+1,4));
 	}
+}
+
+if (localStorage.getItem('highlight') === null){
+	localStorage.setItem('highlight','false');
 }
 
 var SIZE = localStorage.getItem("SIZE");
@@ -38,6 +45,7 @@ let span2 = document.getElementsByClassName("close")[1];
 let submitButton = document.getElementById("submitButton");
 let optionsButton = document.getElementById("optionsButton");
 let homeButton = document.getElementById("homeButton");
+let highlightCheckbox = document.getElementById("highlight");
 
 span.onclick = function() {
   winBox.open = false;
@@ -53,7 +61,6 @@ yesButton.onclick = function() {
 noButton.onclick = function() {
   winBox.open = false;
 }
-
 
 span2.onclick = function() {
   optionsBox.open = false;
@@ -76,11 +83,20 @@ submitButton.onclick = function() {
 optionsButton.onclick = function() {
 	optionsBox.open = true;
 }
+
+highlightCheckbox.onclick = function() {
+	var checked = document.getElementById('highlight').checked;
+	localStorage.setItem('highlight', checked);
+}
+
+// set highlight checkbox according to stored data
+document.getElementById('highlight').checked = (localStorage.getItem('highlight') === 'true');
+
 homeButton.onclick = function() {
 	window.location.href = "./fun.html";
 }
 
-const MYBEST = 6;
+const MYBEST = 7;
 
 function winMessageText(recentscore, prevbestscore){
 	var score = parseInt(localStorage.getItem('score'));
@@ -141,6 +157,7 @@ var NUM_ROWS = SIZE // Math.floor(HEIGHT / (TILESIZE + TILEBUFFER));
 var TILESIZE = Math.floor(WIDTH / NUM_COLS);
 var correctionfactor = (WIDTH - TILESIZE * NUM_COLS)/2;
 var TILEBUFFER = 0;
+var wonthissession = false; //tracks if victory has already occurred, if so the celebration and win screen won't play
 
 const WANG_TILE_SET = [ // (N,W,S,E)
 	[1,3,1,1],
@@ -181,6 +198,9 @@ class Tile extends createjs.Shape {
 			this.selected = true;
 			selectedTile = this;
 			this.updategraphics();
+			if (localStorage.getItem('highlight') === 'true'){
+				updatehighlight(this.i,this.j);
+			}
 			// stage.update();
 		});
 	}
@@ -188,6 +208,9 @@ class Tile extends createjs.Shape {
 		this.selected = true;
 		selectedTile = this;
 		this.updategraphics();
+		if (localStorage.getItem('highlight') === 'true'){
+			updatehighlight(this.i,this.j);
+		}
 		stage.update();
 	}
 	unselect() {
@@ -275,6 +298,29 @@ function validtile(i,j,id){
 	return true;
 }
 
+function celebration(){
+	var si = selectedTile.i;
+	var sj = selectedTile.j;
+	var delayfactor = 150;
+	for(var i = 0; i < SIZE; i++){
+		for (var j=0; j<SIZE; j++){
+			var delay = Math.sqrt((si-i)**2 + (sj-j)**2);
+			var tx = tiles[i][j].x;
+			var ty = tiles[i][j].y;
+			createjs.Tween.get(tiles[i][j], {loop: false})
+			.wait(delay*delayfactor)
+          	.to({scaleX: 0.3, scaleY:0.3, x: tx + TILESIZE*0.35, y: ty + TILESIZE*0.35}, 500, createjs.Ease.getPowInOut(2))
+          	.to({scaleX: 1, scaleY:1, x:tx, y:ty}, 400, createjs.Ease.getPowInOut(2));
+		}
+	}
+	wonthissession = true;
+	const timeout = setTimeout(displayWinBox, SIZE*1.5*delayfactor + 1000);
+}
+
+function displayWinBox(){
+	winBox.open = true;
+}
+
 stage.addEventListener("click", function(){
 	for(var i = 0; i < tiles.length; i++){
 		for(var j = 0; j < tiles[0].length; j++){
@@ -287,10 +333,17 @@ stage.addEventListener("click", function(){
 }, capture=true);
 
 window.addEventListener("click", function (event){
-	console.log(event.target);
 	if (event.target.id != "TileSpace"){
-		selectedTile.unselect();
-		selectedTile = null;
+		if (selectedTile !== null){
+			selectedTile.unselect();
+			selectedTile = null;
+		}
+		if (localStorage.getItem('highlight') === 'true'){
+			for (var i = 0; i < WANG_TILE_SET.length; i++){
+				tiles2[i].alpha = 1;
+			}
+		}
+		panel.update();
 	}
 }, capture=true);
 
@@ -342,13 +395,12 @@ window.addEventListener("keydown", function(event){
 		if (validtile(selectedTile.i,selectedTile.j,letterdict[event.key])){
 			selectedTile.tileid = letterdict[event.key];
 			selectedTile.updategraphics();
-			if (gridcomplete() === true){
-				let prevbestscore = this.localStorage.getItem('score');
+			if (gridcomplete() === true && wonthissession === false){
+				let prevbestscore = localStorage.getItem('score');
 				localStorage.setItem('score',Math.max(prevbestscore, SIZE));
 				updatescore();
 				winMessage.innerHTML = winMessageText(SIZE,prevbestscore);
-				// console.log('win recorded');
-				winBox.open = true; // opens win message
+				celebration();
 			}
 		}
 	}
@@ -385,9 +437,22 @@ class Tile2 extends createjs.Shape {
 		this.x = x;
 		this.y = y;
 		this.tileid = tileid;
-		// this.on("click", function(){
-			
-		// });
+		this.on("click", function(){
+			if (selectedTile != null){
+				selectedTile.select();
+				if (validtile(selectedTile.i,selectedTile.j,tileid)){
+					selectedTile.tileid = tileid;
+					selectedTile.updategraphics();
+					if (gridcomplete() === true && wonthissession === false){
+						let prevbestscore = localStorage.getItem('score');
+						localStorage.setItem('score',Math.max(prevbestscore, SIZE));
+						updatescore();
+						winMessage.innerHTML = winMessageText(SIZE,prevbestscore);
+						celebration();
+					}
+				}
+			}
+		});
 
 		var tile = WANG_TILE_SET[this.tileid];
 		var tilecolors = []; 
@@ -447,5 +512,18 @@ for (var i = 0; i < WANG_TILE_SET.length; i++){
 	var newtile = new Tile2(x,y,i);
 	tiles2[i] = newtile;
 	panel.addChild(newtile);
+	panel.update();
+}
+
+function updatehighlight(i,j) {
+	if (localStorage.getItem('highlight') === 'true'){
+		for (var k = 0; k < WANG_TILE_SET.length; k++){
+			if (validtile(i,j,k)){
+				tiles2[k].alpha = 1;
+			} else {
+				tiles2[k].alpha = 0.3;
+			}
+		}
+	}
 	panel.update();
 }
