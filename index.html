@@ -2,11 +2,13 @@
 <html>
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
 
-<body bgcolor=#0f7b47>
-<body link=#16529C>
-<body visited=#6A46A3>
-
 <style>
+  :root {
+    --bgcolor: #2e3625;
+    --incolor: #b9cbba;
+    --bordercolor: rgba(0, 0, 0, 0.968);
+    --linkcolor: rgba(0, 18, 154, 0.968);
+  }
   footer {
     position: fixed;
     left: 0;
@@ -14,52 +16,55 @@
     width: 100%;
     text-align: center;
     padding: 3px;
-    background-color: Black;
+    background-color: var(--bordercolor);
   }
   body {
   font-family: Georgia;
-  bgcolor: #0f7b47;
-  link: Red;
+  background-color: var(--bgcolor);
+  color: var(--bordercolor);
+  }
+  body a {
+    color: var(--linkcolor);
   }
   div {
     margin: 0 auto;
     height: 100%;
     width: 680px;
-    background-color: #e9b8bc;
+    background-color: var(--incolor);
     bottom-margin: 50px;
     padding: 20px;
     top-padding: 0px;
     border-style: solid;
     border-width: 5px;
-    border-color: black;
+    border-color: var(--bordercolor);
   }
   hr {
-    border-color: purple;
+    border-color: var(--bordercolor);
   }
   ul {
   list-style-type: none;
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background-color: #e9b8bc;
+  background-color: var(--incolor);
   }
 
   ul li {
     float: left;
     border-width: 3px;
-    border-color: purple;
+    border-color: var(--bordercolor);
   }
 
   ul li a {
     display: block;
-    color: black;
+    color: var(--bordercolor);
     text-align: center;
     padding: 14px 16px;
     text-decoration: none;
   }
 
   ul li a:hover {
-    color: #0f7b47;
+    color: var(--bgcolor);
   }
 </style>
 
@@ -109,7 +114,7 @@
     <p>
     Email: <tt>{my initials}@g.ucla.edu</tt><br><br>
     <a href="https://github.com/JZChrysos">Github</a> <br><br>
-    <a href="./files/CV.pdf"> My CV </a>
+    <a href="./files/CV/CV.pdf"> My CV </a>
     </p>
 
   </div>

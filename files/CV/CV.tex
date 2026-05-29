@@ -1,0 +1,130 @@
+\documentclass[11pt,letterpaper,serif]{moderncv}
+
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{hyperref}
+\hypersetup{
+	colorlinks=true,
+	linkcolor=blue,
+	filecolor=green,      
+	urlcolor=green
+}
+\moderncvstyle{banking} % 'casual', 'classic', 'oldstyle' 'banking', 'fancy'
+\moderncvcolor{red} % 'blue' (default), 'orange', 'green', 'red', 'purple', 'grey' and 'black'
+
+\usepackage[scale=0.75]{geometry} % Reduce document margins
+\addtolength{\voffset}{-3.5em}
+\addtolength{\textheight}{7em}
+\setlength{\hintscolumnwidth}{2cm} % width of dates column
+
+%\quote{``It's hard to do a really good job
+%on anything you don't think about in the shower.''
+%--- Paul Graham}
+
+\newcommand{\entry}[6]%
+{\cventry[0.85em]{#4}{#3}{#2}{#1}{#5}{#6}} % banking
+\newcommand{\cvurl}[1]{\bgroup\color{blue}\normalfont\url{#1}\egroup}
+\newcommand{\arxiv}[1]{\bgroup\color{blue}\normalfont\rmfamily%
+\href{http://arxiv.org/abs/#1}{arXiv:#1}\egroup}
+
+%\usepackage[style=chem-rsc,maxnames=7]{biblatex}
+%\addbibresource{biblio.bib}
+
+\lfoot{\emph{Last updated \today}}
+
+\newcommand{\subtext}[1]{\bgroup\footnotesize\rmfamily\color{black!70}#1\egroup}
+\newcommand{\previous}[1]{\bgroup\color{black}\bfseries#1\egroup}
+
+\newcommand{\job}[4]{\smallskip\cvitemwithcomment{#2}{#1}{#3}%
+\unskip\subtext{#4}\medskip}
+
+\newcommand{\pub}[2]{\cvlistitem{#1. \\ \subtext{#2}}\smallskip}
+\newcommand{\paper}[3]{\pub{#1}{#2. \arxiv{#3}.}}
+
+\name{Jalen}{Chrysos}
+\email{jzchrysos11@gmail.com}
+\social[github]{JZChrysos}
+\lfoot{\emph{Last updated \today}}
+
+\begin{document}
+
+\makecvtitle % Print the CV title
+\vspace*{-1.5em}
+
+\section{Education}
+\entry{Fall 2022-Spring 2026}
+	{University of Chicago}%
+	{BA/MS in mathematics.}
+	{}{}{}
+%\textbf{Relevant coursework}:
+%\begin{itemize}
+%	\item Honors Analysis in $\mathbb{R}^n$ 207-209.
+%	\item Honors Basic Algebra 257-259.
+%	\item 
+%	\item Graduate Algebra I-III
+%	\item Graduate Analysis I-III
+%	\item Graduate Topology I-III
+%\end{itemize}
+\cvitemwithcomment{Reed College}%
+	{Concurrent enrollment during high school.}{2020-2021}
+\cvitemwithcomment{Portland State University}%
+	{Dual enrollment during high school.}{2019-2021}
+
+\subsection{Programming experience}
+Python, C++, \LaTeX, Asymptote.
+
+\section{Selected work experience}
+\subsection{Research internships}
+
+\vspace{3mm}
+
+\job{Research Experience for Undergraduates}
+{University of Chicago}{Summer 2025}
+{Wrote an \href{https://github.com/JZChrysos/Math/blob/main/Reverse_Math_REU/Reverse_Math_REU.pdf}{expository paper} on Reverse Mathematics, with a focus on the relationships between Ramsey's Theorem, K\"onig's Lemma, and principles in real analysis. Extensive use and discussion of the method of forcing.}
+
+\job{Algorithm Design Internship}
+{Kepler Computing}{Summer 2023}
+{Wrote algorithms in python for optimal synthesis of logic functions from majority gates.}
+
+\job{Software Internship}
+{Saltire Software}{Summer 2019}
+{Worked on a team to adapt Hermann Helmholtz's \textit{On the Sensations of Tone} into an \href{https://sensationsoftone.com/}{interactive e-book}. Wrote audio-physics applets in Java and typeset diagrams in \LaTeX.}
+
+\job{Data Analyst and Electrical Testing Engineer}
+{Kepler Computing}{June 2021 - September 2022}
+{Wrote testing automation code in python and performed data analysis using matplotlib for the design of ``Beyond CMOS'' computing hardware. Employed full-time.}
+
+\subsection{Teaching and Mentorship}
+
+\vspace{3mm}
+
+\job{Teaching Assistant}
+{University of Chicago}{2023}
+{TA for 160s IBL (Inquiry Based Learning) sequence, an introduction to proofs in real analysis. Graded problem sets, held weekly office hours.}
+
+\job{Math Contest Tutor}
+{Private Tutoring}{2023-present}
+{Taught kids olympiad-level material in a creative and fun way.}
+
+\job{Team Leader}{Oregon ARML}{2020-2021}{Team leader representing Oregon at the ARML (American Regional Math League) competition. Organized practices and logistics for competing, mentored younger kids on the team.}
+
+\subsection{Other}
+
+\vspace{3mm}
+
+\job{Projectionist}{Doc Films}{2023-present}
+{Worked weekly shifts as an apprentice projectionist. Projected and prepped 35mm and 16mm film, as well as digital.}
+
+\section{Selected Fellowships and Achievements}
+
+\begin{itemize}
+	\item \textbf{Paul R. Cohen Undergraduate Prize} (Spring 2026)
+	\item \textbf{Metcalf Grant recipient}: For work at the UChicago Math REU (Summer 2025)
+	\item \textbf{Harvard MIT Math Tournament}: Sixth place team (February 2020)
+	\item \textbf{USA Junior Math Olympiad participant}: Rank $\sim$70 nationally (Spring 2018)
+	\item \textbf{North American Linguistics Olympiad}: Semifinalist and Best Solution Award (Spring 2021)
+\end{itemize}
+
+
+
+\end{document}
