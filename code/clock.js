@@ -13,7 +13,8 @@ const pixelsY = 105;
 // Retrieved 2026-05-22, License - CC BY-SA 4.0
 
 // const charbrightness = [0, 0.0751, 0.0829, 0.0848, 0.1227, 0.1403, 0.1559, 0.185, 0.2183, 0.2417, 0.2571, 0.2852, 0.2902, 0.2919, 0.3099, 0.3192, 0.3232, 0.3294, 0.3384, 0.3609, 0.3619, 0.3667, 0.3737, 0.3747, 0.3838, 0.3921, 0.396, 0.3984, 0.3993, 0.4075, 0.4091, 0.4101, 0.42, 0.423, 0.4247, 0.4274, 0.4293, 0.4328, 0.4382, 0.4385, 0.442, 0.4473, 0.4477, 0.4503, 0.4562, 0.458, 0.461, 0.4638, 0.4667, 0.4686, 0.4693, 0.4703, 0.4833, 0.4881, 0.4944, 0.4953, 0.4992, 0.5509, 0.5567, 0.5569, 0.5591, 0.5602, 0.5602, 0.565, 0.5776, 0.5777, 0.5818, 0.587, 0.5972, 0.5999, 0.6043, 0.6049, 0.6093, 0.6099, 0.6465, 0.6561, 0.6595, 0.6631, 0.6714, 0.6759, 0.6809, 0.6816, 0.6925, 0.7039, 0.7086, 0.7235, 0.7302, 0.7332, 0.7602, 0.7834, 0.8037, 0.9999]
-const chars = " czj@";
+// const chars = " czj@";
+const chars = "@jzc ";
 const charbrightness = [0,0.3,0.35,0.5,0.9999];
 
 function realToChar(real){
@@ -83,6 +84,7 @@ let torusMoveInterval = null;
 let rippleMoveInterval = null;
 let ballMoveInterval = null;
 let coralMoveInterval = null;
+let smokeMoveInterval = null;
 // let brownianMoveInterval = null;
 
 // TORUS
@@ -428,40 +430,40 @@ async function showClock() {
 
 // BROWNIAN
 
-let bRadius = 30;
-let bPos = [0,0];
-let bVel = [20,0];
+// let bRadius = 30;
+// let bPos = [0,0];
+// let bVel = [20,0];
 
-function showBrownian(){
-  let frameSize = 300;
-  let brownimg = [];
-  for (let x=0; x<frameSize; x++){
-    brownimg[x] = [];
-    for (let y=0; y<frameSize + 1; y++){
-      if (((x-bPos[0]) % frameSize)**2 + ((y-bPos[1]) % frameSize)**2 <= bRadius**2){
-        brownimg[x][y] = 1;
-      } else {
-        brownimg[x][y]=0;
-      }
-    }
-  }
-  let brownimg_compressed = compress(brownimg);
-  displayChars(brownianScreen,brownimg_compressed);
-}
+// function showBrownian(){
+//   let frameSize = 300;
+//   let brownimg = [];
+//   for (let x=0; x<frameSize; x++){
+//     brownimg[x] = [];
+//     for (let y=0; y<frameSize + 1; y++){
+//       if (((x-bPos[0]) % frameSize)**2 + ((y-bPos[1]) % frameSize)**2 <= bRadius**2){
+//         brownimg[x][y] = 1;
+//       } else {
+//         brownimg[x][y]=0;
+//       }
+//     }
+//   }
+//   let brownimg_compressed = compress(brownimg);
+//   displayChars(brownianScreen,brownimg_compressed);
+// }
 
-let turnIncrement = Math.PI/18; // 10 deg
+// let turnIncrement = Math.PI/18; // 10 deg
 
-function brownianMove(){
-  let frameSize=300;
-  bPos[0] = (bPos[0] + bVel[0] + frameSize) % frameSize;
-  bPos[1] = (bPos[1] + bVel[1] + frameSize) % frameSize;
+// function brownianMove(){
+//   let frameSize=300;
+//   bPos[0] = (bPos[0] + bVel[0] + frameSize) % frameSize;
+//   bPos[1] = (bPos[1] + bVel[1] + frameSize) % frameSize;
 
-  let turnAmount = Math.floor(Math.random() * 5) - 2;
-  let turn = turnIncrement * turnAmount;
-  bVel = [Math.cos(turn)*bVel[0] + Math.sin(turn)*bVel[1],
-          -1*Math.sin(turn)*bVel[0] + Math.cos(turn)*bVel[1]];
-  showBrownian();
-}
+//   let turnAmount = Math.floor(Math.random() * 5) - 2;
+//   let turn = turnIncrement * turnAmount;
+//   bVel = [Math.cos(turn)*bVel[0] + Math.sin(turn)*bVel[1],
+//           -1*Math.sin(turn)*bVel[0] + Math.cos(turn)*bVel[1]];
+//   showBrownian();
+// }
 
 // brownianScreen.onmouseover = function() {
 //   brownianMoveInterval = setInterval(brownianMove,50);
@@ -473,75 +475,193 @@ function brownianMove(){
 
 // SMOKE
 
-let particles = [];
-let smokeFrameX = 100;
-let smokeFrameY = 100;
-
-// each particle is a list of the form [position, velocity, vorticity]
-
-let gridX = pixelsX;
-let gridY = pixelsY;
-let dX = smokeFrameX/gridX;
-let dY = smokeFrameY/gridY;
-let grid = [];
-
-//each position in the grid has its own velocity and vorticity. Initially all are 0:
-
-for (let i=0; i<gridX; i++){
-  grid[i] = [];
-  for (let j=0; j<gridY; j++){
-    grid[i][j] = [[smokeFrameX * i/gridX, smokeFrameY * j/gridY],[0,0],0];
+let smokeDensity = [];
+let smokeTemp = [];
+for (let i=0; i<pixelsX; i++){
+  smokeDensity[i] = [];
+  smokeTemp[i] = [];
+  for (let j=0; j<pixelsY; j++){
+    smokeDensity[i][j]=0;
+    smokeTemp[i][j] = 0;
   }
 }
-
-let particlesPerPixel = 3;
 
 function smokeShow(){
-  let smokeimg = [];
-  for (let i=0; i<pixelsX; i++){
-    smokeimg[i] = [];
-    for (let j=0; i<pixelsY; j++){
-      smokeimg[i][j] = 0;
-    }
-  }
-  for (let i=0; i<particles.length; i++){
-    let p = particles[i];
-    let pX = p[0][0];
-    let pY = p[0][1];
-    smokeimg[Math.floor(pX * pixelsX/gridX)][Math.floor(pY*pixelsY/gridY)] += 1/particlesPerPixel;
-  }
-  displayChars(smokeScreen,smokeimg, dither=true);
+  displayChars(smokeScreen, smokeDensity);
 }
 
-function smokeMove() {
-  // add new particles (just one for now)
-  let newdir = Math.random()* 2 * Math.PI;
-  let p = [[smokeFrameX / 2, smokeFrameY/2],[Math.cos(newdir),Math.sin(newdir)],0];
-  particles.push(p);
-  // particle vor -> update grid vor
-  for (i=0; i<particles.length; i++){
-    let p = particles[i];
-    let pX = p[0][0];
-    let pY = p[0][1];
-    let a = Math.floor(gridX * pX/smokeFrameX);
-    let b = Math.floor(gridY * pY / smokeFrameY);
-    grid[a][b][2] += p[2]*(a+1 - pX)*(b+1-pY)/(dX*dY); 
-    grid[a+1][b][2] += p[2]*(pX)*(b+1-pY)/(dX*dY); 
-    grid[a][b+1][2] += p[2]*(a+1 - pX)*(pY)/(dX*dY); 
-    grid[a+1][b+1][2] += p[2]*(pX)*(pY)/(dX*dY); 
-  }
-  // grid vor -> update grid vel
-  let psi = [];
-  for (let i=0; i<gridX; i++){
-    psi[i] = [];
-    for (let j=0; j<gridY; j++){
-      psi[i][j] = 1; // RETURN TO WORK HERE
+function smokeMove(){
+  // add smoke at origin
+  let cX = Math.floor(pixelsX/2);
+  let cY = Math.floor(pixelsY/2);
+  smokeTemp[cX][cY] = (smokeDensity[cX][cY]/(smokeDensity[cX][cY]+0.1))*smokeTemp[cX][cY] + (0.1/smokeDensity[cX][cY])*1;
+  smokeDensity[cX][cY] += 0.1;
+
+  //move smoke
+  for (let i=0; i<pixelsX; i++){
+    for (let j=0; j<pixelsY; j++){
+      smokeTemp[i][j];
+      smokeDensity[i][j];
     }
   }
-  // grid vel -> update particle vel 
-  // particle vel -> update particle pos
-  // show smoke
-  smokeShow();
+}
+
+// let particles = [];
+// let smokeFrameX = 100;
+// let smokeFrameY = 100;
+
+// // each particle is a list of the form [position, velocity, vorticity]
+
+// let gridX = pixelsX;
+// let gridY = pixelsY;
+// let dX = smokeFrameX/gridX;
+// let dY = smokeFrameY/gridY;
+// let grid = [];
+
+// //each position in the grid has its own velocity and vorticity. Initially all are 0:
+
+// for (let i=0; i<gridX; i++){
+//   grid[i] = [];
+//   for (let j=0; j<gridY; j++){
+//     grid[i][j] = [[smokeFrameX * i/gridX, smokeFrameY * j/gridY],[0,0],0];
+//   }
+// }
+
+// function resetgrid(){
+//   for (let i=0; i<gridX; i++){
+//     for (let j=0; j<gridY; j++){
+//       grid[i][j] = [[smokeFrameX * i/gridX, smokeFrameY * j/gridY],[0,0],0];
+//     }
+//   }
+// }
+
+// let particlesPerPixel = 4;
+// ;
+// function inFrame(particle){
+//   let pX = particle[0][0];
+//   let pY = particle[0][1];
+//   return (Math.floor(pX * pixelsX/smokeFrameX) >= 1 && Math.floor(pX * pixelsX/smokeFrameX) < pixelsX - 1 && Math.floor(pY*pixelsY/smokeFrameY) >= 1 && Math.floor(pY*pixelsY/smokeFrameY) < pixelsY - 1);
+// }
+
+// function smokeShow(){
+//   let smokeimg = [];
+//   for (let i=0; i<pixelsX; i++){
+//     smokeimg[i] = [];
+//     for (let j=0; j<pixelsY; j++){
+//       smokeimg[i][j] = 0;
+//     }
+//   }
+//   for (let i=0; i<particles.length; i++){
+//     let p = particles[i];
+//     if (inFrame(p)){
+//       let pX = p[0][0];
+//       let pY = p[0][1];
+//       smokeimg[Math.floor(pX * pixelsX/smokeFrameX)][Math.floor(pY*pixelsY/smokeFrameY)] += 1/particlesPerPixel;
+//     }
+//   }
+//   displayChars(smokeScreen,smokeimg, dither=true);
+// }
+
+// let timestep = 0.1;
+// let particlesadded = 1;
+
+// function smokeMove() {
+//   // add new particles (just one for now)
+//   for (let i=0; i< particlesadded; i++){
+//     let newdir = Math.random()* 1 * Math.PI;
+//     let newvor = Math.random()*0.2 - 0.1;
+//     let p = [[smokeFrameX / 2, smokeFrameY/2],[Math.cos(newdir),Math.sin(newdir)],newvor];
+//     particles.push(p);
+//   }
+//   //particle vor -> update grid vor
+//   resetgrid();
+//   for (i=0; i<particles.length; i++){
+//     let p = particles[i];
+//     if (inFrame(p)){
+//       let pX = p[0][0];
+//       let pY = p[0][1];
+//       let a = Math.floor(gridX * pX/ smokeFrameX);
+//       let b = Math.floor(gridY * pY / smokeFrameY);
+//       grid[a][b][2] += p[2]*(a+1 - pX)*(b+1-pY)/(dX*dY); 
+//       if (a+1 < gridX){
+//         grid[a+1][b][2] += p[2]*(pX)*(b+1-pY)/(dX*dY); 
+//       }
+//       if (b+1 < gridY){
+//         grid[a][b+1][2] += p[2]*(a+1 - pX)*(pY)/(dX*dY);
+//       }
+//       if (a+1 < gridX && b+1 < gridY){ 
+//         grid[a+1][b+1][2] += p[2]*(pX)*(pY)/(dX*dY); 
+//       }
+//     }
+//   }
+//   // grid vor -> update grid vel
+//   // let psi = [];
+//   // for (let i=0; i<gridX; i++){
+//   //   psi[i] = [];
+//   //   for (let j=0; j<gridY; j++){
+//   //     psi[i][j] = 0;
+//   //     for (let k=0; k< gridX; k++){
+//   //       for (let l=0; l<gridY; l++){
+//   //         if (k==i && l==j){
+//   //           psi[i][j] += 1;
+//   //         } else {
+//   //           psi[i][j] += (1/(2*Math.PI)) * Math.log(((i-k)**2 * dX**2 + (j-l)**2 * dY**2)**0.5) * grid[k][l][2];
+//   //         }
+//   //       }
+//   //     }
+//   //   }
+//   // }
+//   // for (let i=0; i<gridX; i++){
+//   //   for (let j=0; j<gridY; j++){
+//   //     if (i==0) {
+//   //       newvelX = (psi[i+1][j] - psi[i][j])/dX;
+//   //     } else {
+//   //       newvelX = (psi[i][j] - psi[i-1][j])/dX;
+//   //     }
+//   //     if (j==0){
+//   //       newvelY = (psi[i][j+1] - psi[i][j])/dY;
+//   //     } else {
+//   //       newvelY = (psi[i][j] - psi[i][j-1])/dY;
+//   //     }
+//   //     grid[i][j][1] = [newvelX,newvelY];
+//   //   }
+//   // }
+//   // grid vel -> update particle vel 
+//   // for (i=0; i<particles.length; i++){
+//   //   let p = particles[i];
+//   //   if (inFrame(p)){
+//   //     let pX = p[0][0];
+//   //     let pY = p[0][1];
+//   //     let a = Math.floor(gridX * pX/smokeFrameX);
+//   //     let b = Math.floor(gridY * pY / smokeFrameY);
+//   //     p[1][0] = 0;
+//   //     p[1][1] = 0;
+//   //     p[1][0] += grid[a][b][1][0]*(a+1 - pX)*(b+1-pY)/(dX*dY);
+//   //     p[1][1] += grid[a][b][1][1]*(a+1 - pX)*(b+1-pY)/(dX*dY);  
+//   //     p[1][0] += grid[a+1][b][1][0]*(pX)*(b+1-pY)/(dX*dY); 
+//   //     p[1][1] += grid[a+1][b][1][1]*(pX)*(b+1-pY)/(dX*dY); 
+//   //     p[1][0] += grid[a][b+1][1][0]*(a+1 - pX)*(pY)/(dX*dY); 
+//   //     p[1][1] += grid[a][b+1][1][1]*(a+1 - pX)*(pY)/(dX*dY); 
+//   //     p[1][0] += grid[a+1][b+1][1][0]*(pX)*(pY)/(dX*dY); 
+//   //     p[1][1] += grid[a+1][b+1][1][1]*(pX)*(pY)/(dX*dY); 
+//   //   }
+//   // }
+//   // particle vel -> update particle pos
+//   for (i=0; i<particles.length; i++){
+//     let p = particles[i];
+//     p[0][0] += p[1][0]*timestep;
+//     p[0][1] += p[1][1]*timestep;
+//   }
+//   // show smoke
+//   smokeShow();
+// }
+
+smokeScreen.onmouseover = function() {
+  smokeMoveInterval = setInterval(smokeMove,50);
+}
+
+smokeScreen.onmouseout = function() {
+  clearInterval(smokeMoveInterval);
 }
 
 window.onload = function () {
@@ -550,6 +670,7 @@ window.onload = function () {
   ballMove();
   coralMove();
   showClock();
+  smokeMove();
   // brownianMove();
   setInterval(showClock,30000);
 }

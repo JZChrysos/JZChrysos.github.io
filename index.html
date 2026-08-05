@@ -1,123 +1,127 @@
-<!DOCTYPE html>
 <html>
-<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
 
 <style>
-  :root {
-    --bgcolor: #2e3625;
-    --incolor: #b9cbba;
-    --bordercolor: rgba(0, 0, 0, 0.968);
-    --linkcolor: rgba(0, 18, 154, 0.968);
+  body{
+    font-family:'Consolas';
+    /* color: #E4DFE8; */
+    color: #FFF5CC;
+    background-color: #626285;
   }
-  footer {
-    position: fixed;
-    left: 0;
-    bottom: 0;
-    width: 100%;
-    text-align: center;
-    padding: 3px;
-    background-color: var(--bordercolor);
+  a{
+    color: #ef7592;
   }
-  body {
-  font-family: Georgia;
-  background-color: var(--bgcolor);
-  color: var(--bordercolor);
+  .invisible {
+    color: #FFF5CC; 
+    text-decoration:none;
   }
-  body a {
-    color: var(--linkcolor);
+  h1{
+    font-size: 30pt;
   }
-  div {
-    margin: 0 auto;
-    height: 100%;
-    width: 680px;
-    background-color: var(--incolor);
-    bottom-margin: 50px;
+  h2{
+    font-size: 25pt;
+  }
+  h3{
+    font-size: 15pt;
+  }
+  div{
+    width:100%;
+    overflow: auto;
+  }
+  span{
+    white-space: pre;
+    tab-size: 4;
+    font-family:'Consolas';
+    font-size: 5px;
+    font-weight: bold;
+    /* width: 28%; */
+    /* height: 30%; */
+  }
+  td{
     padding: 20px;
-    top-padding: 0px;
-    border-style: solid;
-    border-width: 5px;
-    border-color: var(--bordercolor);
-  }
-  hr {
-    border-color: var(--bordercolor);
-  }
-  ul {
-  list-style-type: none;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  background-color: var(--incolor);
-  }
-
-  ul li {
-    float: left;
-    border-width: 3px;
-    border-color: var(--bordercolor);
-  }
-
-  ul li a {
-    display: block;
-    color: var(--bordercolor);
-    text-align: center;
-    padding: 14px 16px;
-    text-decoration: none;
-  }
-
-  ul li a:hover {
-    color: var(--bgcolor);
   }
 </style>
+<script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
+<script async src = "./code/index.js"></script>
 
+<header style="width: 100%">
+  <table>
+    <tbody>
+      <tr>
+        <td>
+        <span id="torusScreen" style="float:left"> </span>
+        </td>
+        <td style="text-align:center">
+          <h1>jzchrysos.github.io</h1>
+          <h2>by Jalen Chrysos</h2>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</header>
 
-<body>
+<!-- <hr> -->
+<br>
 
-  <div>
+<h3 style="text-align:center"> About Me </h3>
+I'm currently in my first year as a PhD student in math at UCLA. 
+Before that, I did my undergrad at UChicago, 
+where I mostly studied logic and also volunteered as a 
+<a class="invisible" href="https://docfilms.org/">projectionist</a>. 
+Before that, I grew up in Beaverton, OR.
 
-    <center>
-      <h1> Jalen Z. Chrysos </h1>
-    </center>
-    <hr>
+<!-- <hr> -->
+<br>
 
-    <ul>
-      <li><a href="./index.html">Home</a></li>
-      <li><a href="./writing.html">Writing</a></li>
-      <li><a href="./fun.html">Fun & Games</a></li>
-    </ul>
+<h3 style="text-align:center"> Projects / Writing </h3>
 
-    <hr>
-
-    <table>
+<table>
       <tbody>
         <tr>
           <td>
-            Hi, I'm Jalen. Welcome to my website!
-            <br><br>
-            I'm currently (as of Fall 2026) a PhD student in mathematics at UCLA. Before that, I got my BA/MA in math at UChicago.
-            <br><br>
-            My interests in math are pretty broad but I especially like logic.
+            <img src="./images/WangTiles.png" width=200px>
           </td>
           <td>
-            <img src="./images/Picture_of_me.png" alt="placeholder until i can take a good picture of myself" width=200px>
+            <a href="./wangtiles.html" style='font-size:20px'>Wang Tile Game</a>
+            <br>
+            <p> The "Domino Problem," introduced by Hao Wang in 1961, 
+              asks whether a given set of square tiles with their edges colored can tile the plane (without rotation)
+               such that neighboring tiles' edges match. Berger showed in 1966 that this was an undecidable problem, 
+               implying the existence of tilesets which can only tile the plane aperiodically. 
+               Berger provided such a tileset containing over 20,000 tiles. 
+               Over the years, the size of the smallest known aperiodic Wang tile set came down and down, and finally,
+                in 2015 <a href="https://arxiv.org/abs/1506.06492">Jeandel and Rao</a> showed that the smallest
+                 such tile set has exactly 11 tiles and 4 colors. 
+                 This little interactive game allows you to explore the 11-tile set they discovered. 
+                 To learn about the math, check out <a href="https://www.lacl.fr/pvanier/rech/cirm.pdf">Jeandel and Vanier</a>.</p>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <img src="./images/Preservation.png" width=200px>
+          </td>
+          <td>
+            <a href="./files/Reverse_Math_REU.pdf" style='font-size:20px'>Reverse Mathematics of Ramsey's Theorem and König's Lemma</a>. 
+            <br><br>
+            Reverse mathematics is a field which compares mathematical statements by their strength. 
+            Roughly speaking, statement \(A\) is stronger than statement \(B\) when 
+            one can prove \(A\) implies \(B\) using only "computable mathematics," formally embodied by \(\mathsf{RCA}_0\). 
+            <br>
+            In this framework, we can show, for example, that the compactness of \([0,1]\) is strictly weaker
+             than the <i>sequential</i> compactness of \([0,1]\). This paper covers the basic concepts of computability theory,
+              reverse mathematics, and forcing, with a close examination of the strengths of Ramsey's Theorem and König's Lemma. 
+              I wrote this at the 2025 UChicago math REU.
           </td>
         </tr>
       </tbody>
     </table>
-    <br>
 
-    <table>
+<!-- <hr> -->
+<br>
 
-    </table>
-    <hr>
-    <h3>
-    Contact, etc:
-    </h3>
-    <p>
-    Email: <tt>{my initials}@g.ucla.edu</tt><br><br>
-    <a href="https://github.com/JZChrysos">Github</a> <br><br>
-    <a href="./files/CV/CV.pdf"> My CV </a>
-    </p>
+<h3 style="text-align:center">
+Contact
+</h3>
 
-  </div>
+My email is of the form xxx@ucla.edu. You can probably figure it out from there. The donut at the top of this page contains a hint.
 
-</body>
 </html>
