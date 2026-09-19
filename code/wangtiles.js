@@ -93,7 +93,7 @@ highlightCheckbox.onclick = function() {
 document.getElementById('highlight').checked = (localStorage.getItem('highlight') === 'true');
 
 homeButton.onclick = function() {
-	window.location.href = "./fun.html";
+	window.location.href = "./index.html";
 }
 
 const MYBEST = 7;
