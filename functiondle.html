@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<style>
+</style>
+
+<script async src = "./code/functiondle.js">
+</script>
+
+<!-- The idea of this game is that it's a daily 'dle style thing where there's 
+ a hidden function each day that you can do I/O to figure out what the function is. 
+ you win the game if you get the function to output a goal number (24). 
+ your score is the number of I/O pairs you needed to do, the less the better. 
+ 
+ Visually I'm planning to have a text box with I/O pairs appearing below in the form
+ I -> O after each input is given. If 24 is output, then win. Report score etc.
+ Maybe I can integrate some leaderboard.
+ 
+ The hard part will be coming up with a ton of functions that work for this. 
+ I want my functions to have the following properties:
+ 
+ 1. complicated enough that you can't immediately figure out what they are
+ 2. no input under 50 should win (otherwise it would be too easy)
+ 3. sufficiently varied
+ 4. not impossible to guess, but i am okay with making them comically difficult
+ 
+ -->
+<center>
+
+<h1>FUNCTIONDLE</h1>
+<br>
+<h2>
+Try to get the mystery function to output <b style="color:red">24</b>
+</h2>
+
+
+<br>
+
+<input type="number" id="inputBox" maxlength="10"></input>
+
+<pre id="recordBox">
+</pre>
+
+</center>
+</html>
