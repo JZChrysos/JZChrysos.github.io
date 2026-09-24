@@ -4,6 +4,8 @@ const recordBox = document.getElementById("recordBox");
 const MAXINPUT = 9999999999;
 const MININPUT = 0;
 const GOALNUMBER = 24;
+let won = false;
+let queries = 0;
 
 function MysteryFunction(input){
     return parseInt(input) + 1;
@@ -11,10 +13,12 @@ function MysteryFunction(input){
 
 function NewInput(input){
     inputBox.value = "";
+    queries += 1;
     let output = MysteryFunction(input);
     recordBox.textContent += input + ' \u2192 ' + output + '\r\n';
-    if (output == GOALNUMBER){
-        window.alert("You win!")
+    if (output === GOALNUMBER && won === false){
+        window.alert("You won in " + queries + " queries!");
+        won = true;
     }
 }
 
@@ -30,6 +34,5 @@ window.addEventListener("keydown", function(event){
         } else {
             this.alert("Minimum input is " + MININPUT);
         };
-        console.log(input);
     }
 })
