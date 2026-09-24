@@ -2,27 +2,32 @@
 
 <style>
   body{
-    font-family:'Consolas';
+    font-family:'Garamond';
     color: #FFF5CC;
     background-color: #626285;
     width: 850px;
     margin: auto;
+    font-size: 15pt;
+  }
+  p{
+    font-size: 13pt;
   }
   a{
     color: #ef7592;
+    font-weight: bold;
   }
   .invisible {
     color: #FFF5CC; 
     text-decoration:none;
   }
   h1{
-    font-size: 30pt;
+    font-size: 36pt;
   }
   h2{
-    font-size: 25pt;
+    font-size: 30pt;
   }
   h3{
-    font-size: 15pt;
+    font-size: 20pt;
   }
   div{
     width:100%;
@@ -42,11 +47,15 @@
   }
   @font-face {
     font-family: Albertus; /* set name */
-    src: url(./files/Albertus.otf); /* url of the font */
+    src: url(./files/Fonts/Albertus.otf); /* url of the font */
   }
   @font-face {
-    font-family: Consolas; /* set name */
-    src: url(./files/consola.ttf); /* url of the font */
+    font-family: Inconsolata; /* set name */
+    src: url(./files/Fonts/Inconsolata.ttf); /* url of the font */
+  }
+  @font-face {
+    font-family: Garamond; /* set name */
+    src: url(./files/Fonts/EBGaramond.ttf); /* url of the font */
   }
 </style>
 <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@4/tex-mml-chtml.js"></script>
@@ -57,7 +66,7 @@
     <tbody>
       <tr>
         <td>
-        <span id="torusScreen" style="float:left"> </span>
+        <span id="torusScreen" style="float:left; font-family: Inconsolata"> </span>
         </td>
         <td style="text-align:center">
           <h1>jzchrysos.github.io</h1>
@@ -69,7 +78,6 @@
 </header>
 
 <!-- <hr> -->
-<br>
 
 <h3 style="text-align:center"> About Me </h3>
 I'm currently in my first year as a PhD student in math at UCLA. 
@@ -90,7 +98,7 @@ Before that, I grew up in Beaverton, OR.
             <img src="./images/WangTiles.png" width=200px>
           </td>
           <td>
-            <a href="./wangtiles.html" style='font-size:20px'>Wang Tile Game</a>
+            <a href="./wangtiles.html" style='font-size:17pt'>Wang Tile Game</a>
             <br>
             <p> The "Domino Problem," introduced by Hao Wang in 1961, 
               asks whether a given set of square tiles with their edges colored can tile the plane (without rotation)
@@ -109,8 +117,9 @@ Before that, I grew up in Beaverton, OR.
             <img src="./images/Preservation.png" width=200px>
           </td>
           <td>
-            <a href="./files/Reverse_Math_REU.pdf" style='font-size:20px'>Reverse Mathematics of Ramsey's Theorem and König's Lemma</a>. 
-            <br><br>
+            <a href="./files/Reverse_Math_REU.pdf" style='font-size:17pt'>Reverse Mathematics of Ramsey's Theorem and König's Lemma</a>. 
+            <br>
+            <p>
             Reverse mathematics is a field which compares mathematical statements by their strength. 
             Roughly speaking, statement \(A\) is stronger than statement \(B\) when 
             one can prove \(A\) implies \(B\) using only "computable mathematics," formally embodied by \(\mathsf{RCA}_0\). 
@@ -118,7 +127,7 @@ Before that, I grew up in Beaverton, OR.
             In this framework, we can show, for example, that the compactness of \([0,1]\) is strictly weaker
              than the <i>sequential</i> compactness of \([0,1]\). This paper covers the basic concepts of computability theory,
               reverse mathematics, and forcing, with a close examination of the strengths of Ramsey's Theorem and König's Lemma. 
-              I wrote this at the 2025 UChicago math REU.
+              I wrote this at the 2025 UChicago math REU.</p>
           </td>
         </tr>
       </tbody>

@@ -1,10 +1,11 @@
 const torusScreen = document.getElementById("torusScreen");
 
 const pixelsX = 50;
-const pixelsY = 105;
+const pixelsY = 110;
 
 const chars = "@jzc ";
-const charbrightness = [0,0.3,0.35,0.5,0.9999];
+// const charbrightness = [0,0.3,0.35,0.5,0.9999];
+const charbrightness = [0,0.25,0.35,0.47,0.9999];
 
 function realToChar(real){
   if (real < 0){
@@ -75,7 +76,7 @@ let torusMoveInterval = null;
 
 const outer = 30;
 const inner = 10;
-samples = 70;
+samples = 80;
 
 function inTorus(torusN,outer,inner,x,y,z){
   let a = torusN[0];
@@ -144,7 +145,7 @@ function showTorus(screen,torusN,lightDirection){
   displayChars(screen,img,dither=true);
 }
 
-let tTorus=0;
+let tTorus=0.01;
 
 let light = [2,0,1];
 let lightR = (light[0]**2 + light[1]**2 + light[2]**2)**0.5;
