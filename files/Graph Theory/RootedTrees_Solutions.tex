@@ -1,0 +1,71 @@
+\documentclass{amsart}
+
+\input{../preamble_general.tex}
+
+\author{Jalen Chrysos}
+\title{Rooted Trees \& Cayley's Formula (with Solutions)}
+
+\begin{document}
+	\maketitle 
+	
+	%	A subgraph $T$ of $G$ is called a \textit{spanning tree} if $T$ includes every vertex and is a tree. For each graph $G$, let $t(G)$ be the number of spanning trees of $G$.\\
+	%	
+	%	\noindent \textbf{Problem}: Show if $G$ is connected then $t(G)\geq 1$.\\
+	%	
+	%	\noindent \textbf{Problem}: Show that if a tree $T$ is a subgraph of $G$ (not necessarily a spanning tree), then $T$ can be extended to a spanning tree of $G$.\\
+	%	
+	%	\noindent \textbf{Problem}: Show that if $C_n$ is a subgraph of $G$, $t(G)\geq n$.\\
+	%	
+	%	\noindent \textbf{Problem}: In this problem we will show Cayley's Formula, which states that $t(K_n)=n^{n-2}$. This proof, due to Jim Pitman, calculates $t(K_n)$ by first calculating the number of \textit{rooted} spanning trees, which turns out to be much easier.
+	%	\begin{enumerate}[(a)]
+		%		\item A \textit{rooted tree} is a tree along with orientations of each edge such that every vertex has out-degree at most 1.
+		%	\end{enumerate}
+	
+	
+	A \textit{rooted tree} is a tree $T$ with a distinguished vertex $r$ called the ``root.'' \\
+	
+	\noindent \textbf{Problem 1}: Given a tree $T$, the choice of a root $r$ induces an orientation on the edges of $T$: 
+	\begin{enumerate}[(a)]
+		\item Show that for every edge $e\in T$, with endpoints $x_1,x_2$, there is a path in $T$ either of the form
+		$$(x_1,x_2,\dots,r) \;\; \text{or} \;\; (x_2,x_1,\dots,r),$$
+		but not both. Thus we can orient $e$ uniquely so that it is part of a directed path ending at $r$.
+		\item Show that under the orientation induced by $r$ described in (a), every vertex has out-degree exactly 1 except for $r$ itself.
+		\item Show conversely that if $T$ is a directed tree such that every vertex has out-degree $\leq 1$, then this orientation is the same as one induced by some choice of a root in $T$.\\
+	\end{enumerate} 
+	
+	\textbf{Solution}: \\
+	
+	(a): Trees are connected, so both $x_1$ and $x_2$ have paths ending at $r$. But Trees also have no cycles. If the path $x_1\to r$ does not pass through $x_2$ and the path $x_2\to r$ does not pass through $x_1$, then there is a walk $x_1\to r \to x_2$ which does not use edge $e$. This implies that there is a cycle involving $e$, which contradicts $T$ being a tree.\\
+	
+	(b): Each vertex in $T$ has a unique path to $r$, so exactly one of its adjoining edges will be outgoing, except in the case of $r$ itself which has no paths to $r$.\\
+	
+	(c): If every vertex has out-degree $\leq 1$, then because there are $n-1$ edges, the sum of out-degrees is $n-1$, so every vertex except 1 has out-degree 1. And if you start at any vertex and follow the outgoing arrows, there is a unique path and it must end at the vertex of degree 0, therefore it is equivalent to the degree-0 vertex being the root.\\
+	
+	\noindent \textbf{Problem 2}: In this problem we will derive Cayley's Formula, which states that the graph $K_n$ has exactly $n^{n-2}$ spanning trees. This proof was first described by Jim Pitman.
+	\begin{enumerate}[(a)]
+		\item Call a nested sequence of subgraphs 
+		$$A_1\subset A_2\subset \cdots \subset A_{n-1}$$
+		an \textit{assembly} if each $A_j$ is a directed subgraph of $K_n$ with exactly $j$ edges. Show that for any rooted spanning tree $T\subset K_n$, there is an assembly such that $A_{n-1}=T$.
+		\item For each rooted spanning tree $T$, how many assemblies are there with $T=A_{n-1}$?
+		\item Compute the number of assemblies such that $A_{n-1}$ is a rooted tree. (\textit{Hint: consider adding a directed edge to $A_j$: how many places can the head go? How many places can the tail go?})
+		\item Using (b) and (c), compute the number of rooted spanning trees of $K_n$.
+		\item Finally, using (d), compute the number of spanning trees of $K_n$.\\
+	\end{enumerate}
+	
+	\textbf{Solution}: \\
+	
+	(a): This can be done by having $A_1$ be a single edge of $T$, having $A_2$ be $A_1$ with one more edge of $T$, and so on.\\
+	
+	(b): Assemblies of $T$ just correspond to different orders in which to add in edges from $T$, of which there are $n-1$, and hence $(n-1)!$ possible orders.\\
+	
+	(c): There are $n(n-1)$ possible options for $A_1$ ($n$ choices for the head of the edge and $n-1$ for the tail). Similarly, at the point of extending $A_j$ to $A_{j+1}$, there are $n$ choices for the head $h$, and $n-j-1$ choices for the tail: it must be placed at a vertex with out-degree 0 that is also not in the same component as $h$ (in other words, the root of one of the components not including $h$). There are $n-j$ components at this point, and $n-j-1$ of them do not include $h$, and in each of these components there is exactly one place with out-degree 0 (the component's root) where the tail can be placed. Thus, there are 
+	$$
+	n(n-1) \cdot n(n-2) \cdot n(n-3) \cdots n(1) = n^{n-1} (n-1)!
+	$$
+	ways to choose $A_1,A_2,\dots,A_{n-1}$ such that $A_{n-1}$ is a rooted tree.\\
+	
+	(d): There are $n^{n-1}(n-1)!$ assemblies of rooted trees, and each rooted tree is made by $(n-1)!$ assemblies, so these assemblies can make $n^{n-1}$ distinct rooted trees.\\
+	
+	(e): Each tree corresponds to exactly $n$ rooted trees (given by choosing one of the $n$ vertices to be the root), giving $n^{n-2}$ total spanning trees of $K_n$.
+	
+\end{document}

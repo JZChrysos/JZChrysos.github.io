@@ -1,0 +1,60 @@
+\documentclass{amsart}
+
+\input{../preamble_general.tex}
+
+%\author{Jalen Chrysos}
+\title{Practice Midterm 1}
+
+% topics:
+% induction
+% counting 
+% induced subgraphs
+% graph isomorphism, "triangle free"
+% graph score and Havel-Hakimi
+% K_n, K_{m,n} and C_n
+% connected components
+% graph distance
+% 2-connected graphs, ear decomposition
+
+
+\begin{document}
+	
+	\maketitle 
+	
+	\textit{In all questions, please justify your answers as appropriate. Any legitimate solution will be accepted, unless the question specifically calls for a certain method.}\\
+	
+	\noindent \textbf{Question 1}: 
+	\begin{enumerate}[(a)]
+		\item Show that there is a graph $G$ whose degree sequence (score) is $(3,3,3,3,3,5,5,5)$. \hfill \vspace{180px}
+		
+		\item Let $G$ be a graph as in part (a). How many edges must $G$ contain? \hfill \vspace{150px}
+		
+		\item Is it possible that such a graph $G$ contains $C_6$ as an induced subgraph? \vspace{100px}
+	\end{enumerate}
+	
+	\newpage 
+	
+	\noindent \textbf{Question 2}: In this question it is okay to leave your answer unsimplified.
+	\begin{enumerate}[(a)]
+		\item How many subgraphs of $K_{10}$ are isomorphic to $K_4$? \vspace{100px}
+		
+		\item How many subgraphs of $K_{10}$ are isomorphic to $K_{3,3}$? \vspace{130px}
+		
+		\item How many subgraphs of $K_{10}$ are isomorphic to $C_{10}$? \vspace{150px}
+		
+		\item Show that if $K_{10}$ is expressed as an ear decomposition, the number of ears (including the cycle at the beginning) is the same regardless of the decomposition, and compute this number.
+	\end{enumerate}
+	
+	
+	\newpage \textbf{Question 3}: Recall that an \textit{Eulerian cycle} on $G$ is a sequence of vertices $v_1,v_2,\dots,v_n$ such that $v_i\sim v_{i+1}$ for each $i$, every edge of $G$ is $(v_i,v_{i+1})$ for exactly one $i$, and $v_1=v_n$.
+	
+	\begin{enumerate}[(a)]
+		\item Show that $K_4$ has no Eulerian cycle. If you use a fact proven in class or the textbook, you must prove it. \vspace{120px}
+		
+		\item Show that $K_5$ \textit{does} have an Eulerian cycle by constructing an explicit example. \vspace{150px}
+		
+		\item Show \textit{using induction} that $K_n$ has an Eulerian cycle for every odd $n\geq 3$. \vspace{170px}
+		
+		\item Is every graph with an Eulerian cycle 2-connected? Prove it or give a counterexample.
+	\end{enumerate}
+\end{document}

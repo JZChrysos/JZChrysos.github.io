@@ -7,6 +7,12 @@ const GOALNUMBER = 24;
 let won = false;
 let queries = 0;
 
+// ideas:
+// break into unique prime factors
+// break into digits
+// sum series
+// 
+
 function MysteryFunction(input){
     return parseInt(input) + 1;
 }

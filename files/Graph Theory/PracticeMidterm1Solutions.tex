@@ -1,0 +1,117 @@
+\documentclass{amsart}
+
+\input{../preamble_general.tex}
+
+%\author{Jalen Chrysos}
+\title{Practice Midterm 1 (with Solutions)}
+
+% topics:
+% induction
+% counting 
+% induced subgraphs
+% graph isomorphism, "triangle free"
+% graph score and Havel-Hakimi
+% K_n, K_{m,n} and C_n
+% connected components
+% graph distance
+% 2-connected graphs, ear decomposition
+
+
+\begin{document}
+	
+	\maketitle 
+	
+	\textit{In all questions, please justify your answers as appropriate. Any legitimate solution will be accepted, unless the question specifically calls for a certain method.}\\
+	
+	\noindent \textbf{Question 1}: 
+	\begin{enumerate}[(a)]
+		\item Show that there is a graph $G$ whose degree sequence (score) is $(3,3,3,3,3,5,5,5)$. \\
+		
+		One way to quickly do this is to see that $K_{3,5}$ has this degree sequence. Otherwise, there is the Havel-Hakimi algorithm:
+		\begin{align*}
+			(3,3,3,3,3,5,5,5) &\to (3,3,2,2,2,4,4)\\
+			&\to (2,2,2,3,3,4,4) \\
+			&\to (2,2,1,2,2,3) \\
+			&\to (1,2,2,2,2,3) \\
+			&\to (1,2,1,1,1)\\
+			&\to (1,1,1,1,2)\\
+			&\to (1,1,0,0)\\
+			&\to (0,0,1,1)\\
+			&\to (0,0,0).
+		\end{align*}
+		
+		\item Let $G$ be a graph as in part (a). How many edges must $G$ contain? \\
+		
+		The sum of the degrees of a graph is equal to twice the number of edges (handshake lemma). Thus, the number of edges is 
+		$$
+		\frac{1}{2}(3+3+3+3+3+5+5+5) = 15.
+		$$
+		\vspace{50px}
+		
+		\item Is it possible that such a graph $G$ contains $C_6$ as an induced subgraph? \\
+		
+		No. Suppose $C_6$ is an induced subgraph of $G$ and the other two vertices are labeled $a,b$. Then each vertex in the $C_6$ has degree at most 4: it cannot connect to any of the three vertices of the $C_6$ that are not adjacent to it, because the $C_6$ is \textit{induced}. However, the graph $G$ is supposed to have three vertices of degree 5. There cannot be three vertices of degree 5 and six vertices of degree at most 4, since there are 8 vertices total.
+	\end{enumerate}
+	
+	\newpage 
+	
+	\noindent \textbf{Question 2}: In this question it is okay to leave your answer unsimplified.
+	\begin{enumerate}[(a)]
+		\item How many subgraphs of $K_{10}$ are isomorphic to $K_4$? \\
+		
+		Each $K_4$ subgraph in $K_{10}$ is the induced subgraph of a selection of $4$ vertices, of which there are ${10 \choose 4}$.
+		\vspace{70px}
+		
+		\item How many subgraphs of $K_{10}$ are isomorphic to $K_{3,3}$?\\
+		
+		\noindent There are ${10\choose 6}$ ways to select 6 vertices, and among these there are ${6\choose 3}\cdot \tfrac12$ ways to choose a $K_{3,3}$, since one must choose $3$ vertices of the 6 and each $K_{3,3}$ is counted exactly twice (choosing vertices $\{1,2,3\}$ or $\{4,5,6\}$ result in the same graph). \\
+		
+		\vspace{50px}
+		
+		\item How many subgraphs of $K_{10}$ are isomorphic to $C_{10}$?\\
+		
+		\noindent There are $10!$ ways to order the 10 vertices, but each $C_{10}$ is counted 20 times: once for each starting point of the cycle (of which there are 10 possibilities) and twice for each direction: for example, the cycle $(1,2,3,4,5,6,7,8,9,10)$ can be represented
+		$$
+		(1,2,3,4,5,6,7,8,9,10), (1,10,9,8,7,6,5,4,3,2), (2,3,4,5,6,7,8,9,10,1), (2,1,10,9,8,7,6,5,4,3), \dots 
+		$$
+		so the answer is $10!/(20) = 9!/2$.
+		
+		\vspace{50px}
+		
+		\item Show that if $K_{10}$ is expressed as an ear decomposition, the number of ears (including the cycle at the beginning) is the same regardless of the decomposition, and compute this number. \\
+		
+		The initial cycle has the same number of edges and vertices. Each ear after that introduces $k$ new edges and $k-1$ new vertices, for some $k\geq 1$. Thus, because $K_{10}$ has $10$ vertices and $45$ edges, there must be exactly 35 ears after the initial cycle, hence $36$ ears total.
+	\end{enumerate}
+	
+	
+	\newpage \textbf{Question 3}: Recall that an \textit{Eulerian cycle} on $G$ is a sequence of vertices $v_1,v_2,\dots,v_n$ such that $v_i\sim v_{i+1}$ for each $i$, every edge of $G$ is $(v_i,v_{i+1})$ for exactly one $i$, and $v_1=v_n$.
+	
+	\begin{enumerate}[(a)]
+		\item Show that $K_4$ has no Eulerian cycle. If you use a fact proven in class or the textbook, you must prove it. \\
+		
+		The vertices of $K_4$ all have degree 3. If an Eulerian cycle enters $v$ via edge $a$ and leaves via edge $b$, then $v$ cannot be visited again because there is only one remaining edge; once it is used, there is no way to leave $v$ without traversing a previously used edge. Thus there is no Eulerian cycle.
+		\vspace{60px}
+		
+		\item Show that $K_5$ \textit{does} have an Eulerian cycle by constructing an explicit example. \\
+		
+		Let the vertices of $K_5$ be labeled $1,2,3,4,5$. One Eulerian cycle is
+		$$
+		(1,2,3,4,5,1,3,5,2,4,1).
+		$$
+		\vspace{60px}
+		
+		\item Show \textit{using induction} that $K_n$ has an Eulerian cycle for every odd $n\geq 3$.\\
+		
+		The base case, $n=3$, is fairly easy. So assume that $K_n$ has an Eulerian cycle, where $n$ is odd, and let us show it for $K_{n+2}$. Let the vertices of $K_{n+2}$ be $v_1,v_2,\dots,v_n,a,b$, and let $E$ be an Eulerian cycle on $v_1,\dots,v_n$ (by the inductive hypothesis), starting and ending on $v_1$. Then the following is an Eulerian cycle of $K_{n+2}$:
+		$$
+		(\underbrace{v_1, \dots, v_1}_{E}, a, v_2, b, v_3, a, v_4, b, \dots , v_n, a, b, v_1).
+		$$
+		Note that $v_n$ is followed by $a$ \textit{because $n$ is odd}.
+		
+		\vspace{50px}
+		
+		\item Is every graph with an Eulerian cycle 2-connected? Prove it or give a counterexample.\\
+		
+		No. A counterexample is two triangles which share a vertex $v$. If this vertex is removed, then the graph is disconnected, so it is not 2-connected. But it does have an Eulerian cycle, formed by joining the cycles of the two triangles which start and end at $v$. To be specific, if the triangles are $v,a_1,a_2$ and $v,b_1,b_2$, then we have the cycle $v,a_1,a_2,v,b_1,b_2,v)$.
+	\end{enumerate}
+\end{document}

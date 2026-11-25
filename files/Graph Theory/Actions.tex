@@ -1,0 +1,26 @@
+\documentclass{amsart}
+
+\input{../preamble_general.tex}
+
+\author{Jalen Chrysos}
+\title{Action graphs}
+
+\begin{document}
+	\maketitle 
+	
+	Let $V$ be a set of size $n<\infty$, and let $f:V\to V$ be some function with no fixed points. One can form a simple graph $G$ whose vertex set is $V$ by saying that 
+	$$
+	v\sim w \; \iff \; f(v) = w \;\; \text{or} \;\; f(w)=v.
+	$$
+	Let's explore some properties of graphs like this.\\
+	
+	\noindent \textbf{Problem}: What are the least and greatest numbers of edges that $G$ can have, in terms of $n$?\\
+	
+	\noindent \textbf{Problem}: Show that $G$ does not contain a subgraph isomorphic to $K_4$.\\
+	
+	\noindent \textbf{Problem}: Show that $G$ is 3-colorable by the following steps:
+	\begin{enumerate}[(i)]
+		\item Show there is an \textit{independent} set $U\subseteq V$ for which every $v\in G$ has $f^j(v)\in U$ for some $j$.
+		\item Show that $G$ has a 3-coloring.
+	\end{enumerate}
+\end{document}

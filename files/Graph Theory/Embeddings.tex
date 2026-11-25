@@ -1,0 +1,91 @@
+\documentclass{amsart}
+
+\input{../preamble_general.tex}
+
+\setlength{\textheight}{700pt}
+
+\author{Jalen Chrysos}
+\title{Embedded Graphs}
+
+\begin{document}
+	\maketitle 
+	We've talked about planar graphs, graphs that can be embedded in $\R^2$ without edges crossing. But what if we replace $\R^2$ by some other surface $S$, for example a torus?\\
+%	We've learned that if a graph $G$ is embedded in the plane, then it satisfies Euler's formula:
+%	$$
+%	V - E + F = 2
+%	$$
+%	where $V$ is the number of vertices of $G$, $E$ is the number of edges, and $F$ is the number of faces. We've also seen that $G$ can be embedded in the plane if and only if $G$ does not contain $K_5$ or $K_{3,3}$ as minors.\\
+%	
+%	\underline{\textbf{Question}}: For a given topological space $S$, what can we say about graphs embedded in $S$?\\
+	
+	\noindent Technical note: we only consider \textit{cellular embeddings}, which are embeddings of $G$ such that the faces of $G$ are homeomorphic to disks---informally, they have no holes.\\
+%	
+%	$$\textbf{DIAGRAM: CELLULAR VS NONCELLULAR EMBEDDING}$$
+	
+	\noindent 
+	If $G$ has a cellular embedding into $S$, it may not be that $V-E+F=2$, but it is true that $V-E+F$ is some constant depending on $S$ (and not on $G$), which we denote $\chi(S)$:
+	$$
+	V - E + F = \chi(S).
+	$$
+	$\chi(S)$ is called the \textbf{\textit{Euler characteristic}} of $S$. In practice it can be computed just by knowing this fact and picking a fairly simple graph with a cellular embedding into $S$.\\
+	
+	\noindent \textbf{Problem 1}: Compute the Euler characteristics of the following surfaces:
+	\begin{enumerate}[(i)]
+		\item Plane
+		\item Sphere
+		\item Torus
+		\item $2$-holed torus\\
+	\end{enumerate}
+	
+	\noindent \textbf{Problem 2}: Suppose a simple graph $G$ has a cellular embedding into $S$.
+	\begin{enumerate}[(a)]
+		\item Show that $E\leq 3(V-\chi(S))$.
+		\item Suppose that the shortest cycle in $G$ has length $k$. Show that 
+		$$
+		E \leq \frac{k}{k-2} (V-\chi(S)).
+		$$
+	\end{enumerate}
+	\vspace{0.1cm}
+	
+	\noindent \textbf{Problem 3}: For which $n$ does $K_n$ have a cellular embedding into the torus?\\
+	
+	\begin{center}
+	\begin{tabular}{|c|c|c|c|c|c|c|c|}
+		\hline 
+		$n$ & $\;3\;$ & $\;4\;$ & $\;5\;$ & $\;6\;$ & $\;7\;$ & $\;8\;$ & \dots \\
+		\hline 
+		Embedding? & & & & & & & \\[3pt]
+		\hline 
+	\end{tabular}
+	\end{center}
+	\vspace{0.3cm}
+	
+	\noindent \textbf{Problem 4}: For which $m,n$ does $K_{m,n}$ have a cellular embedding into the torus?\\
+
+	\begin{center}
+		\begin{tabular}{|c|c|c|c|c|c|c|c|}
+			\hline 
+			$m,n$ & $\; 2\; $ & $\;3\;$ & $\;4\;$ & $\;5\;$ & $\;6\;$ & $\;7\;$ & \dots \\[3pt]
+			\hline 
+			$2$ & & & & & & & \\[3pt]
+			\hline 
+			$3$ & & & & & & & \\[3pt]
+			\hline 
+			$4$ & & & & & & & \\[3pt]
+			\hline 
+			$5$ & & & & & & & \\[3pt]
+			\hline 
+			$6$ & & & & & & & \\[3pt]
+			\hline 
+			$7$ & & & & & & & \\[3pt]
+			\hline 
+			$\vdots$ & & & & & & & \\
+			\hline 
+		\end{tabular}
+	\end{center}
+	
+	\vspace{0.3cm}
+	
+	Robertson and Seymour proved in 2004 that for any surface $S$, there is some finite set $\G(S)$ of graphs such that $G$ can be cellularly embedded into $S$ if and only if it has no minor in $\G(S)$. For planar graphs, as we saw, $\G(\R^2)=\{K_5,K_{3,3}\}$. For the torus, $\G(T)$ is still not fully known, but it is known that it contains at least 17,000 graphs.
+	
+\end{document}
